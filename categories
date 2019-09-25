@@ -1,5 +1,4 @@
-Food
-Rent
-Shopping
-Transport
-Other
+Rent=1300.0
+Food=700.0
+Utilities=100.0
+Shopping=400.0
