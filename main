@@ -1,0 +1,69 @@
+import Transaction as Trc
+
+
+def main_menu():
+    print('[1] Track transaction\n[2] Show history\n[3] Show statistics')
+    menu_change(input('>>>'))
+
+
+def track_transaction():
+    Trc.create_transaction(get_expanse(), get_description(), get_category())
+    main_menu()
+
+
+def get_expanse():
+    try:
+        expanse = float(input('Please insert expanse value: '))
+    except ValueError:
+        print('Input should be a number!')
+        return get_expanse()
+    if expanse < 0:
+        print('Input should be positive!')
+        return get_expanse()
+    return expanse
+
+
+def get_category():
+    print(*get_categories_list())
+    category = input('Please insert category: ')
+    if category not in get_categories_list():
+        print('There is no such category. Please choose proper one!')
+        return get_category()
+    return category
+
+
+def get_description():
+    description = input('Please insert short description: ')
+    if len(description) == 0:
+        print('Description cannot be empty!')
+        return get_description()
+    return description
+
+
+def history():
+    pass
+
+
+def statistics():
+    pass
+
+
+def menu_change(choice):
+    menu_map[choice]()
+
+
+def get_categories_list():
+    categories_list = []
+    with open('categories', mode='r') as categories_file:
+        for row in categories_file.readlines():
+            categories_list.append(row.replace('\n', ''))
+    return categories_list
+
+
+menu_map = {
+    '1': track_transaction,
+    '2': history,
+    '3': statistics
+}
+
+main_menu()
