@@ -1,75 +1,95 @@
 import Transaction as Trc
 import Payment as Pmt
+import Period as Prd
 import utilities as uti
 import categories as ctg
+import statistics as stat
 
 
 def main_menu():
     print('[1] Track transaction\n[2] Record payment\n[3] Show history\n[4] Show statistics\n[5] Add/Remove '
-          'category\n[WIP] Update limits\n[WIP] Manage periods')
+          'category\n[6] Update limits\n[7] Manage periods\n[WIP] Analyze history')
     menu_change(input('>>>'))
 
 
 def track_transaction():
-    Trc.create_transaction(uti.get_expanse(), uti.get_description(), uti.get_category())
-    print('Transaction added successfully!')
+    if Prd.is_period_active():
+        Trc.create_transaction(uti.get_expanse(), uti.get_description(), uti.get_category())
+        print('Transaction added successfully!')
     main_menu()
 
 
 def record_payment():
-    Pmt.create_payment(uti.get_payment(), uti.get_description())
-    print('Payment added successfully!')
+    if Prd.is_period_active():
+        Pmt.create_payment(uti.get_payment(), uti.get_description())
+        print('Payment added successfully!')
     main_menu()
 
 
 def history():
-    print('Transactions history:')
-    for transaction in Trc.get_transaction_history():
-        print('{} for {} - {}'.format(transaction.expense, transaction.category, transaction.description))
-    print('Payment history:')
-    for payment in Pmt.get_payment_history():
-        print('{} - {}'.format(payment.payment, payment.description))
+    if Prd.is_period_active():
+        stat.show_history()
     main_menu()
 
 
 def add_remove_category():
-    answer = input('Would you like to [a]add or [r]remove category? ')
-    if answer.lower() == 'a':
-        ctg.add_category()
-    elif answer.lower() == 'r':
-        ctg.remove_category()
+    if Prd.is_period_active() is False:
+        answer = input('Would you like to [a]add or [r]remove category? ')
+        if answer.lower() == 'a':
+            ctg.add_category()
+        elif answer.lower() == 'r':
+            ctg.remove_category()
+        else:
+            print('There is no such option. Please choose proper one!')
+            return add_remove_category()
     else:
-        print('There is no such option. Please proper one!')
-        return add_remove_category()
+        print('Categories cannot be modified when period is active!')
     main_menu()
 
 
 def update_limits():
-    pass
-
-
-def manage_periods():
-    pass
-
-
-def statistics():
-    if len(Trc.get_transaction_history()) > 0:
-        print('Total: {} out of {} ({}%)'.format(Trc.get_total(), ctg.get_total_of_limits(), ctg.get_total_percentage()))
-        print('Savings: {} out of {} ({}%)'.format(Pmt.get_total()-Trc.get_total(), Pmt.get_total(),
-                                                   round((Pmt.get_total()-Trc.get_total())/Pmt.get_total()*100, 2)))
-        print('Biggest expanse: {} for {}, {}'.format(Trc.get_biggest_expanse().expense, Trc.get_biggest_expanse(
-        ).category, Trc.get_biggest_expanse().description))
-        print('Total by categories: ')
-        for category in ctg.get_categories_names():
-            print('{}: {} ({}%)'.format(category, Trc.get_total_by_category(category), round(Trc.get_total_by_category(
-                category)/Trc.get_total()*100)))
+    print(*ctg.get_categories_list())
+    answer = input('Which category limit would you like to update? ')
+    if answer in ctg.get_categories_names():
+        ctg.update_category_limit(answer)
     else:
-        print('There are no statistics available cause you did not add any transactions!')
+        print('There is no such category!')
     main_menu()
 
 
+def manage_periods():
+    answer = input('Would you like to [s]start or [c]close period? ')
+    if answer.lower() == 's':
+        Prd.start_period()
+    elif answer.lower() == 'c':
+        if Prd.is_period_active():
+            Prd.close_period()
+    else:
+        print('There is no such option. Please choose proper one!')
+        return manage_periods()
+    main_menu()
+
+
+def statistics():
+    if Prd.is_period_active():
+        print('Actual period: {}'.format(Prd.get_actual_period_name()))
+        print('Available categories: {}'.format([*ctg.get_categories_names()]))
+        print(stat.get_total_info())
+        print(stat.get_total_savings())
+        stat.get_total_categories()
+    main_menu()
+
+
+def analyze_history():
+    pass
+
+
 def menu_change(choice):
-    menu_map[choice]()
+    if choice in menu_map.keys():
+        menu_map[choice]()
+    else:
+        print('There is no such option, please insert proper one!')
+    main_menu()
 
 
 menu_map = {
@@ -79,7 +99,8 @@ menu_map = {
     '4': statistics,
     '5': add_remove_category,
     '6': update_limits,
-    '7': manage_periods
+    '7': manage_periods,
+    '8': analyze_history
 }
 
 main_menu()

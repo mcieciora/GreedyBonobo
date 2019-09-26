@@ -10,7 +10,7 @@ class Transaction:
 
 
 def create_transaction(expense, description, category):
-    with open('history.csv', mode='a') as history_file:
+    with open('period.csv', mode='a') as history_file:
         history_writer = csv.writer(history_file, delimiter='|')
         history_writer.writerow([get_next_transaction_id(), expense, description, category])
 
@@ -34,7 +34,7 @@ def get_transactions_by_category(category):
 
 def get_transaction_history():
     transaction_history = []
-    with open('history.csv', mode='r') as history_file:
+    with open('period.csv', mode='r') as history_file:
         history = history_file.readlines()
         for row in history:
             split_row = row.replace('\n', '').split('|')
