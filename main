@@ -9,7 +9,7 @@ import statistics as stat
 
 def main_menu():
     print('[1] Add/Remove transaction\n[2] Add/Remove income\n[3] Show history\n[4] Show statistics\n[5] Add/Remove '
-          'category\n[6] Update limits\n[7] Manage periods\n[WIP] Analyze history\n[WIP] Tutorial')
+          'category\n[6] Update limits\n[7] Manage periods')
     menu_change(input('>>>'))
 
 
@@ -27,6 +27,8 @@ def add_transaction():
         else:
             print('There is no such option. Please choose proper one!')
             return add_transaction()
+    else:
+        print('There is no active period!')
     main_menu()
 
 
@@ -44,17 +46,22 @@ def add_income():
         else:
             print('There is no such option. Please choose proper one!')
             return add_transaction()
+    else:
+        print('There is no active period!')
     main_menu()
 
 
 def history():
     if Prd.is_period_active():
         stat.show_history()
+    else:
+        print('There is no active period!')
     main_menu()
 
 
 def add_remove_category():
     if Prd.is_period_active() is False:
+        print(*ctg.get_categories_names())
         answer = input('Would you like to [a]add or [r]remove category? ')
         if answer.lower() == 'a':
             ctg.add_category()
@@ -87,12 +94,18 @@ def update_limits():
 
 
 def manage_periods():
+    print('Actual period: {}'.format(Prd.get_actual_period_name()))
     answer = input('Would you like to [s]start or [c]close period? ')
     if answer.lower() == 's':
-        Prd.start_period()
+        if Prd.is_period_active() is False:
+            Prd.start_period()
+        else:
+            print('There is already active period!')
     elif answer.lower() == 'c':
         if Prd.is_period_active():
             Prd.close_period()
+        else:
+            print('There is no active period to close!')
     elif answer.lower() == 'q':
         main_menu()
     else:
@@ -108,11 +121,9 @@ def statistics():
         print(stat.get_total_info())
         print(stat.get_total_savings())
         stat.get_total_categories()
+    else:
+        print('There is no active period!')
     main_menu()
-
-
-def analyze_history():
-    pass
 
 
 def menu_change(choice):
@@ -132,8 +143,7 @@ menu_map = {
     '4': statistics,
     '5': add_remove_category,
     '6': update_limits,
-    '7': manage_periods,
-    '8': analyze_history,
+    '7': manage_periods
 }
 
 main_menu()
