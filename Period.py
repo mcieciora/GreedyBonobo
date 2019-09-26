@@ -22,7 +22,7 @@ def start_period():
 
 
 def close_period():
-    answer = input('Are you sure you want to close actual period? [Y/n] ')
+    answer = input('Are you sure you want to close {} period? [Y/n] '.format(get_actual_period_name()))
     if answer.lower() == 'y':
         update_history(get_actual_period_name())
         open('period.csv', 'w').close()
@@ -82,12 +82,14 @@ def get_periods_names():
 
 
 def get_actual_period_name():
-    return get_periods_names()[-1]
+    if is_period_active():
+        return get_periods_names()[-1]
+    else:
+        return 'None'
 
 
 def is_period_active():
     if len(get_periods_list()) > 0 and get_periods_list()[-1].active == 'True':
         return True
     else:
-        print('There is no active period!')
         return False
