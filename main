@@ -8,24 +8,42 @@ import statistics as stat
 
 
 def main_menu():
-    print('[1] Add transaction\n[2] Show history\n[3] Show statistics\n[4] Add/Remove '
-          'category\n[5] Update limits\n[6] Manage periods\n[WIP] Analyze history')
+    print('[1] Add/Remove transaction\n[2] Add/Remove income\n[3] Show history\n[4] Show statistics\n[5] Add/Remove '
+          'category\n[6] Update limits\n[7] Manage periods\n[WIP] Analyze history\n[WIP] Tutorial')
     menu_change(input('>>>'))
 
 
 def add_transaction():
     if Prd.is_period_active():
-        answer = input('Would you like to record [c]cost or [i]income? ')
-        if answer.lower() == 'c':
-            Trc.create_transaction(uti.get_expanse(), uti.get_description(), uti.get_category())
-            print('Cost added successfully!')
-        elif answer.lower() == 'i':
-            Pmt.create_payment(uti.get_payment(), uti.get_description())
-            print('Income added successfully!')
+        answer = input('Would you like to [a]add or [r]remove transaction? ')
+        if answer.lower() == 'a':
+            Trc.add_transaction(uti.get_expanse(), uti.get_description(), uti.get_category())
+            print('Transaction added successfully!')
+        elif answer.lower() == 'r':
+            Trc.remove_transaction(input('Insert transaction &id: '))
+            print('Income removed successfully!')
         elif answer.lower() == 'q':
             main_menu()
         else:
             print('There is no such option. Please choose proper one!')
+            return add_transaction()
+    main_menu()
+
+
+def add_income():
+    if Prd.is_period_active():
+        answer = input('Would you like to [a]add or [r]remove income? ')
+        if answer.lower() == 'a':
+            Pmt.add_payment(uti.get_payment(), uti.get_description())
+            print('Income added successfully!')
+        elif answer.lower() == 'r':
+            Pmt.remove_payment(input('Insert transaction &id: '))
+            print('Income removed successfully!')
+        elif answer.lower() == 'q':
+            main_menu()
+        else:
+            print('There is no such option. Please choose proper one!')
+            return add_transaction()
     main_menu()
 
 
@@ -53,15 +71,18 @@ def add_remove_category():
 
 
 def update_limits():
-    print(*ctg.get_categories_list())
-    answer = input('Which category limit would you like to update? ')
-    if answer in ctg.get_categories_names():
-        ctg.update_category_limit(answer)
-    elif answer.lower() == 'q':
-        main_menu()
+    if Prd.is_period_active() is False:
+        print(*ctg.get_categories_list())
+        answer = input('Which category limit would you like to update? ')
+        if answer in ctg.get_categories_names():
+            ctg.update_category_limit(answer)
+        elif answer.lower() == 'q':
+            main_menu()
+        else:
+            print('There is no such category!')
+            return update_limits()
     else:
-        print('There is no such category!')
-        return update_limits()
+        print('Categories cannot be modified when period is active!')
     main_menu()
 
 
@@ -106,12 +127,13 @@ def menu_change(choice):
 
 menu_map = {
     '1': add_transaction,
-    '2': history,
-    '3': statistics,
-    '4': add_remove_category,
-    '5': update_limits,
-    '6': manage_periods,
-    '7': analyze_history,
+    '2': add_income,
+    '3': history,
+    '4': statistics,
+    '5': add_remove_category,
+    '6': update_limits,
+    '7': manage_periods,
+    '8': analyze_history,
 }
 
 main_menu()

@@ -14,7 +14,7 @@ def show_history():
     if len(Pmt.get_payment_history()) > 0:
         print('Payment history:')
         for payment in Pmt.get_payment_history():
-            print('{} - {}'.format(payment.payment, payment.description))
+            print('&{} {} - {}'.format(payment.payment_id, payment.payment, payment.description))
     else:
         print('There are no payments to show!')
 
