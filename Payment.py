@@ -8,10 +8,26 @@ class Payment:
         self.description = description
 
 
-def create_payment(payment, description):
-    with open('payment.csv', mode='a') as payment_file:
-        payment_writer = csv.writer(payment_file, delimiter='|')
-        payment_writer.writerow([get_next_payment_id(), payment, description])
+def add_payment(payment, description):
+    payment_list = get_payment_history()
+    payment_list.append(Payment(get_next_payment_id(), payment, description))
+    update_payment_history(payment_list)
+
+
+def remove_payment(payment_id):
+    payment_list = get_payment_history()
+    for payment in payment_list:
+        if payment.payment_id == payment_id:
+            payment_list.remove(payment)
+    update_payment_history(payment_list)
+
+
+def update_payment_history(payment_list):
+    open('payment.csv', 'w').close()
+    with open('payment.csv', mode='a') as payment_history:
+        history_writer = csv.writer(payment_history, delimiter='|')
+        for payment in payment_list:
+            history_writer.writerow([payment.payment_id, payment.payment, payment.description])
 
 
 def get_next_payment_id():

@@ -9,10 +9,27 @@ class Transaction:
         self.category = category
 
 
-def create_transaction(expanse, description, category):
-    with open('period.csv', mode='a') as history_file:
-        history_writer = csv.writer(history_file, delimiter='|')
-        history_writer.writerow([get_next_transaction_id(), expanse, description, category])
+def add_transaction(expanse, description, category):
+    transactions_list = get_transaction_history()
+    transactions_list.append(Transaction(get_next_transaction_id(), expanse, description, category))
+    update_transactions_history(transactions_list)
+
+
+def remove_transaction(transaction_id):
+    transaction_list = get_transaction_history()
+    for transaction in transaction_list:
+        if transaction.transaction_id == transaction_id:
+            transaction_list.remove(transaction)
+    update_transactions_history(transaction_list)
+
+
+def update_transactions_history(transaction_list):
+    open('period.csv', 'w').close()
+    with open('period.csv', mode='a') as transaction_history:
+        history_writer = csv.writer(transaction_history, delimiter='|')
+        for transaction in transaction_list:
+            history_writer.writerow([transaction.transaction_id, transaction.expense, transaction.description,
+                                    transaction.category])
 
 
 def get_next_transaction_id():
@@ -57,14 +74,3 @@ def get_total_by_category(category):
         if transaction.category == category:
             total += float(transaction.expense)
     return round(total, 2)
-
-
-def get_biggest_expanse():
-    transaction_history = get_transaction_history()
-    biggest = None
-    if len(transaction_history) > 0:
-        biggest = transaction_history[0]
-        for transaction in transaction_history:
-            if transaction.expense > biggest.expense:
-                biggest = transaction
-    return biggest
