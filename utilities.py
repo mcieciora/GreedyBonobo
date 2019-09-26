@@ -15,7 +15,7 @@ def get_expanse():
 
 def get_payment():
     try:
-        payment = float(input('Please insert payment value: '))
+        payment = float(input('Please insert income value: '))
     except ValueError:
         print('Input should be a number')
         return get_payment()

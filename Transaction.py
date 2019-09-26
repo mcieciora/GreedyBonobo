@@ -9,10 +9,10 @@ class Transaction:
         self.category = category
 
 
-def create_transaction(expense, description, category):
+def create_transaction(expanse, description, category):
     with open('period.csv', mode='a') as history_file:
         history_writer = csv.writer(history_file, delimiter='|')
-        history_writer.writerow([get_next_transaction_id(), expense, description, category])
+        history_writer.writerow([get_next_transaction_id(), expanse, description, category])
 
 
 def get_next_transaction_id():

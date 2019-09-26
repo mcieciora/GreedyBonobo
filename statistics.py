@@ -25,7 +25,7 @@ def get_total_info():
 
 
 def get_total_savings():
-    savings = Pmt.get_total() - Trc.get_total()
+    savings = round(Pmt.get_total() - Trc.get_total(), 2)
     if Pmt.get_total() != 0:
         return 'Savings: {} out of {} total income ({}%)'.format(savings, Pmt.get_total(), get_percentage(savings,
                                                                                                Pmt.get_total()))
