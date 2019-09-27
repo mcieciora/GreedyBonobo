@@ -8,7 +8,8 @@ import statistics as stat
 
 
 def main_menu():
-    print('[1] Add/Remove transaction\n[2] Add/Remove income\n[3] Show history\n[4] Show statistics\n[5] Add/Remove '
+    print('[1] Add/Remove transaction\n[2] Add/Remove income\n[3] Show history\n[4] Show statistics [WIP]\n[5] '
+          'Add/Remove '
           'category\n[6] Update limits\n[7] Manage periods')
     menu_change(input('>>>'))
 

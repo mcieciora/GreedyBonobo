@@ -12,7 +12,7 @@ def show_history():
     else:
         print('There are no transactions to show!')
     if len(Pmt.get_payment_history()) > 0:
-        print('Payment history:')
+        print('Income history:')
         for payment in Pmt.get_payment_history():
             print('&{} {} - {}'.format(payment.payment_id, payment.payment, payment.description))
     else:
@@ -37,13 +37,22 @@ def get_total_categories():
     print('Total by categories: ')
     for category in ctg.get_categories_names():
         if Trc.get_total() != 0:
-            print('{}: {} of {} limit which is {}% of total spends'.format(category, Trc.get_total_by_category(
-                category),
-                ctg.get_category_limit(category), get_percentage(Trc.get_total_by_category(category), Trc.get_total())))
+            print('-{}:\n    {} of {} limit {}% which is {}% of total spends'.format(category,
+                Trc.get_total_by_category(category), ctg.get_category_limit(category), get_percentage(
+                    Trc.get_total_by_category(category), ctg.get_category_limit(category)),
+                                                                                get_percentage(
+                    Trc.get_total_by_category(category), Trc.get_total())))
         else:
-            print('{}: {} of {} limit which is {}% of total spends'.format(category, Trc.get_total_by_category(
-                category), ctg.get_category_limit(
-                category), 0))
+            print('-{}:\n    {} of {} limit {}% which is {}% of total spends'.format(category,
+                                                                                     Trc.get_total_by_category(
+                                                                                         category),
+                                                                                     ctg.get_category_limit(category),
+                                                                                     get_percentage(
+                                                                                         Trc.get_total_by_category(
+                                                                                             category),
+                                                                                         ctg.get_category_limit(
+                                                                                             category)),
+                                                                                     0))
 
 
 def get_percentage(a, b):
