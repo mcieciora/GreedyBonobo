@@ -38,6 +38,14 @@ def get_next_payment_id():
         return 1
 
 
+def get_payment_id_list():
+    payment_history = get_payment_history()
+    payments_id_list = []
+    for payment in payment_history:
+        payments_id_list.append(payment.payment_id)
+    return payments_id_list
+
+
 def get_payment_history():
     payment_history = []
     with open('payment.csv', mode='r') as payment_file:
