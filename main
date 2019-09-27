@@ -109,7 +109,7 @@ def update_limits():
 
 def manage_periods():
     print('Actual period: {}'.format(Prd.get_actual_period_name()))
-    answer = input('Would you like to [s]start or [c]close period? ')
+    answer = input('Would you like to [l]list, [s]start, [c]close or [r]remove periods? ')
     if answer.lower() == 's':
         if Prd.is_period_active() is False:
             Prd.start_period()
@@ -122,6 +122,19 @@ def manage_periods():
             print('There is no active period to close!')
     elif answer.lower() == 'q':
         main_menu()
+    elif answer.lower() == 'l':
+        if len(Prd.get_periods_list()) > 0:
+            print(Prd.get_periods_names())
+        else:
+            print('There are no periods to list!')
+    elif answer.lower() == 'r':
+        print(*Prd.get_periods_names())
+        period_name = input('Insert period name to remove: ')
+        if period_name in Prd.get_periods_names():
+            Prd.remove_period_from_history(period_name)
+        else:
+            print('There is no period with such name!')
+            return manage_periods()
     else:
         print('There is no such option. Please choose proper one!')
         return manage_periods()

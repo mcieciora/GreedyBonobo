@@ -56,6 +56,18 @@ def remove_period(period_name):
     save_period_info(period_list)
 
 
+def remove_period_from_history(period_name):
+    if period_name != get_actual_period_name():
+        period_list = get_periods_list()
+        for period in period_list:
+            if period.name == period_name:
+                period_list.remove(period)
+        save_period_info(period_list)
+        print('Period removed successfully!')
+    else:
+        print('Current period cannot be removed!')
+
+
 def save_period_info(period_list):
     open('history.csv', 'w').close()
     with open('history.csv', mode='a') as periods_info_file:
