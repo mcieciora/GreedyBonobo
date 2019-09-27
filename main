@@ -8,9 +8,10 @@ import statistics as stat
 
 
 def main_menu():
-    print('[1] Add/Remove transaction\n[2] Add/Remove income\n[3] Show history\n[4] Show statistics [WIP]\n[5] '
+    stat.get_basic_info()
+    print('[1] Add/Remove transaction\n[2] Add/Remove income\n[3] Show history\n[4] Show statistics\n[5] '
           'Add/Remove '
-          'category\n[6] Update limits\n[7] Manage periods')
+          'category\n[6] Update limits\n[7] Manage periods\n')
     menu_change(input('>>>'))
 
 
@@ -21,8 +22,13 @@ def add_transaction():
             Trc.add_transaction(uti.get_expanse(), uti.get_description(), uti.get_category())
             print('Transaction added successfully!')
         elif answer.lower() == 'r':
-            Trc.remove_transaction(input('Insert transaction &id: '))
-            print('Income removed successfully!')
+            transaction_id = input('Insert transaction &id: ')
+            if transaction_id in Trc.get_transactions_id_list():
+                Trc.remove_transaction(transaction_id)
+                print('Transaction removed successfully!')
+            else:
+                print('There is no transaction with such &id!')
+                return add_transaction()
         elif answer.lower() == 'q':
             main_menu()
         else:
@@ -40,8 +46,13 @@ def add_income():
             Pmt.add_payment(uti.get_payment(), uti.get_description())
             print('Income added successfully!')
         elif answer.lower() == 'r':
-            Pmt.remove_payment(input('Insert transaction &id: '))
-            print('Income removed successfully!')
+            payment_id = input('Insert income &id: ')
+            if payment_id in Pmt.get_payment_id_list():
+                Pmt.remove_payment(payment_id)
+                print('Income removed successfully!')
+            else:
+                print('There is no income with such &id!')
+                return add_income()
         elif answer.lower() == 'q':
             main_menu()
         else:
@@ -66,8 +77,10 @@ def add_remove_category():
         answer = input('Would you like to [a]add or [r]remove category? ')
         if answer.lower() == 'a':
             ctg.add_category()
+            print(*ctg.get_categories_names())
         elif answer.lower() == 'r':
             ctg.remove_category()
+            print(*ctg.get_categories_names())
         elif answer.lower() == 'q':
             main_menu()
         else:

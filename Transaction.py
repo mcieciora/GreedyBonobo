@@ -40,6 +40,14 @@ def get_next_transaction_id():
         return 1
 
 
+def get_transactions_id_list():
+    transaction_history = get_transaction_history()
+    transactions_id_list = []
+    for transaction in transaction_history:
+        transactions_id_list.append(transaction.transaction_id)
+    return transactions_id_list
+
+
 def get_transactions_by_category(category):
     transaction_history = get_transaction_history()
     category_list = []
