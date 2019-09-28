@@ -147,7 +147,11 @@ def statistics():
         print('Available categories: {}'.format([*ctg.get_categories_names()]))
         print(stat.get_total_info())
         print(stat.get_total_savings())
-        stat.get_total_categories()
+        stat.print_biggest_expanse()
+        for category in ctg.get_categories_names():
+            print('-{}:'.format(category))
+            stat.get_total_by_category(category)
+            stat.print_biggest_expanse_by_category(category)
     else:
         print('There is no active period!')
     main_menu()
