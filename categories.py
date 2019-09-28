@@ -1,7 +1,9 @@
 def add_category():
     new_category = input('Insert new category name: ')
     categories_list = get_categories_list()
-    if new_category not in get_categories_names():
+    if new_category == 'q':
+        return 0
+    elif new_category not in get_categories_names():
         category_limit = get_category_limit_input()
         categories_list.append('{}={}'.format(new_category, category_limit))
         update_category_file(categories_list)
@@ -15,7 +17,9 @@ def remove_category():
     print(*get_categories_names())
     category_to_remove = input('Insert category to remove: ')
     categories_list = get_categories_list()
-    if category_to_remove in get_categories_names():
+    if category_to_remove == 'q':
+        return 0
+    elif category_to_remove in get_categories_names():
         for category in categories_list:
             if category.startswith(category_to_remove):
                 categories_list.remove(category)
@@ -50,7 +54,7 @@ def update_category_limit(category_name):
             categories_list.remove(category)
     categories_list.append('{}={}'.format(category_name, new_limit))
     update_category_file(categories_list)
-    print(*get_categories_list())
+    print('Category {} updated with new limit: {}'.format(category_name, new_limit))
 
 
 def update_category_file(new_category_list):

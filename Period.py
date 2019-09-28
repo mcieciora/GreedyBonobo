@@ -16,6 +16,7 @@ def start_period():
     period_name = input('Insert period name: ')
     if period_name not in get_periods_names():
         add_period(Period(period_name, 0, 0, 0, True))
+        print('Period started successfully!')
     else:
         print('There is already period with that name!')
         return start_period()
@@ -24,9 +25,11 @@ def start_period():
 def close_period():
     answer = input('Are you sure you want to close {} period? [Y/n] '.format(get_actual_period_name()))
     if answer.lower() == 'y':
-        update_history(get_actual_period_name())
+        current_period = get_actual_period_name()
+        update_history(current_period)
         open('period.csv', 'w').close()
         open('payment.csv', 'w').close()
+        print('Period {} closed successfully!'.format(current_period))
     elif answer.lower() == 'n':
         pass
     else:
