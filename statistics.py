@@ -38,14 +38,52 @@ def get_basic_info():
     print('Incomes: {}\n'.format(Pmt.get_total()))
 
 
-def get_total_categories():
-    print('Total by categories: ')
-    for category in ctg.get_categories_names():
-        print('-{}:\n    {} of {} limit ({}%) which is {}% of total expenses'.format(category,
-            Trc.get_total_by_category(category), ctg.get_category_limit(category), get_percentage(
-                Trc.get_total_by_category(category), ctg.get_category_limit(category)),
-                                                                            get_percentage(
-                Trc.get_total_by_category(category), Trc.get_total())))
+def get_total_by_category(category):
+    print('    {} of {} limit ({}%) which is {}% of total expenses'.format(Trc.get_total_by_category(
+        category), ctg.get_category_limit(category), get_percentage(Trc.get_total_by_category(category),
+            ctg.get_category_limit(category)), get_percentage(Trc.get_total_by_category(category),
+                                                                       Trc.get_total())))
+
+
+def get_average_by_category(category):
+    if len(Trc.get_transactions_by_category(category)) > 0:
+        print('    Average expense per transaction is {}'.format(Trc.get_total_by_category(category)/len(
+            Trc.get_transactions_by_category(category))))
+
+
+def print_biggest_expanse():
+    biggest = get_biggest_expanse()
+    if biggest is not None:
+        print('    Biggest expanse: {} for {} - {}'.format(biggest.expense, biggest.category, biggest.description))
+    else:
+        print('    Biggest expanse: no transactions')
+
+
+def get_biggest_expanse():
+    transaction_list = Trc.get_transaction_history()
+    biggest = transaction_list[0]
+    for transaction in transaction_list:
+        if float(transaction.expense) > float(biggest.expense):
+            biggest = transaction
+    return biggest
+
+
+def print_biggest_expanse_by_category(category):
+    biggest = get_biggest_expanse_by_category(category)
+    if biggest is not None:
+        print('    Biggest expanse in category: {} - {}'.format(biggest.expense, biggest.description))
+    else:
+        print('    Biggest expanse in category: no transactions')
+
+
+def get_biggest_expanse_by_category(category):
+    transaction_list = Trc.get_transactions_by_category(category)
+    if len(transaction_list) > 0:
+        biggest = transaction_list[0]
+        for transaction in transaction_list:
+            if float(transaction.expense) > float(biggest.expense):
+                biggest = transaction
+        return biggest
 
 
 def get_percentage(a, b):
