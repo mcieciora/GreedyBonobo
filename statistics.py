@@ -54,18 +54,19 @@ def get_average_by_category(category):
 def print_biggest_expanse():
     biggest = get_biggest_expanse()
     if biggest is not None:
-        print('    Biggest expanse: {} for {} - {}'.format(biggest.expense, biggest.category, biggest.description))
+        print('Biggest expanse: {} for {} - {}'.format(biggest.expense, biggest.category, biggest.description))
     else:
-        print('    Biggest expanse: no transactions')
+        print('Biggest expanse: no transactions')
 
 
 def get_biggest_expanse():
     transaction_list = Trc.get_transaction_history()
-    biggest = transaction_list[0]
-    for transaction in transaction_list:
-        if float(transaction.expense) > float(biggest.expense):
-            biggest = transaction
-    return biggest
+    if len(transaction_list) > 0:
+        biggest = transaction_list[0]
+        for transaction in transaction_list:
+            if float(transaction.expense) > float(biggest.expense):
+                biggest = transaction
+        return biggest
 
 
 def print_biggest_expanse_by_category(category):
