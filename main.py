@@ -1,4 +1,5 @@
 import sys
+import os
 import Transaction as Trc
 import Payment as Pmt
 import Period as Prd
@@ -161,6 +162,14 @@ def statistics():
     back_to_main_menu()
 
 
+def validate_environment():
+    files = ['period.csv', 'payment.csv', 'history.csv', 'categories']
+    for file in files:
+        if not os.path.isfile(file):
+            open(file, 'w')
+    main_menu()
+
+
 def menu_change(choice):
     if choice.lower() == 'q':
         sys.exit()
@@ -181,4 +190,4 @@ menu_map = {
     '7': manage_periods
 }
 
-main_menu()
+validate_environment()
