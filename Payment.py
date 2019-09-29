@@ -51,8 +51,9 @@ def get_payment_history():
     with open('payment.csv', mode='r') as payment_file:
         payments = payment_file.readlines()
         for row in payments:
-            split_row = row.replace('\n', '').split('|')
-            payment_history.append(Payment(split_row[0], split_row[1], split_row[2]))
+            if row != '\n':
+                split_row = row.replace('\n', '').split('|')
+                payment_history.append(Payment(split_row[0], split_row[1], split_row[2]))
     return payment_history
 
 

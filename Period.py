@@ -83,8 +83,9 @@ def get_periods_list():
     period_list = []
     with open('history.csv', mode='r') as period_info_file:
         for row in period_info_file.readlines():
-            split_row = row.replace('\n', '').split('|')
-            period_list.append(Period(split_row[0], split_row[1], split_row[2], split_row[3], split_row[4]))
+            if row != '\n':
+                split_row = row.replace('\n', '').split('|')
+                period_list.append(Period(split_row[0], split_row[1], split_row[2], split_row[3], split_row[4]))
     return period_list
 
 
