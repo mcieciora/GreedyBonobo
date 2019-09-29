@@ -34,7 +34,8 @@ def get_categories_list():
     categories_list = []
     with open('categories', mode='r') as categories_file:
         for row in categories_file.readlines():
-            categories_list.append(row.replace('\n', ''))
+            if row != '\n':
+                categories_list.append(row.replace('\n', ''))
     return categories_list
 
 
@@ -42,7 +43,8 @@ def get_categories_names():
     categories_list = []
     with open('categories', mode='r') as categories_file:
         for row in categories_file.readlines():
-            categories_list.append(row.replace('\n', '').split('=')[0])
+            if row != '\n':
+                categories_list.append(row.replace('\n', '').split('=')[0])
     return categories_list
 
 
@@ -79,8 +81,7 @@ def get_total_of_limits():
     limits_list = get_categories_list()
     total = 0
     for limit in limits_list:
-        if limit != '':
-            total += float(limit.split('=')[1])
+        total += float(limit.split('=')[1])
     return total
 
 
