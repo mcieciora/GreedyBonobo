@@ -79,7 +79,8 @@ def get_total_of_limits():
     limits_list = get_categories_list()
     total = 0
     for limit in limits_list:
-        total += float(limit.split('=')[1])
+        if limit != '':
+            total += float(limit.split('=')[1])
     return total
 
 
