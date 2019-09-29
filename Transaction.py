@@ -62,8 +62,9 @@ def get_transaction_history():
     with open('period.csv', mode='r') as history_file:
         history = history_file.readlines()
         for row in history:
-            split_row = row.replace('\n', '').split('|')
-            transaction_history.append(Transaction(split_row[0], split_row[1], split_row[2], split_row[3]))
+            if row != '\n':
+                split_row = row.replace('\n', '').split('|')
+                transaction_history.append(Transaction(split_row[0], split_row[1], split_row[2], split_row[3]))
     return transaction_history
 
 
