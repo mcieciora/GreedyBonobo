@@ -1,24 +1,21 @@
-from datetime import date
-from datetime import datetime
 import csv
 import Payment as Ptm
 import Transaction as Trc
 
 
 class Period:
-    def __init__(self, name, incomes, spendings, savings, active, date):
+    def __init__(self, name, incomes, spendings, savings, active):
         self.name = name
         self.incomes = incomes
         self.spendings = spendings
         self.savings = savings
         self.active = active
-        self.date = date
 
 
 def start_period():
     period_name = input('Insert period name: ')
     if period_name not in get_periods_names():
-        add_period(Period(period_name, 0, 0, 0, True, date.today().strftime('%d/%m/%Y')))
+        add_period(Period(period_name, 0, 0, 0, True))
         print('Period started successfully!')
     else:
         print('There is already period with that name!')
@@ -45,7 +42,7 @@ def update_history(period_name):
     spendings = Trc.get_total()
     savings = incomes - spendings
     remove_period(period_name)
-    add_period(Period(period_name, incomes, spendings, savings, False, date.today().strftime('%d/%m/%Y')))
+    add_period(Period(period_name, incomes, spendings, savings, False))
 
 
 def add_period(period):
@@ -89,8 +86,7 @@ def get_periods_list():
         for row in period_info_file.readlines():
             if row != '\n':
                 split_row = row.replace('\n', '').split('|')
-                period_list.append(Period(split_row[0], split_row[1], split_row[2], split_row[3], split_row[4],
-                                          split_row[5]))
+                period_list.append(Period(split_row[0], split_row[1], split_row[2], split_row[3], split_row[4]))
     return period_list
 
 
@@ -114,9 +110,3 @@ def is_period_active():
         return True
     else:
         return False
-
-
-def get_period_day_number():
-    period_date = datetime.strptime(get_periods_list()[-1].date, '%d/%m/%Y')
-    today = date.today().strftime('%d/%m/%Y')
-    return
