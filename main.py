@@ -160,7 +160,6 @@ def manage_periods():
 def statistics():
     if Prd.is_period_active():
         print('Actual period: {}'.format(Prd.get_actual_period_name()))
-        print('Actual period day: '.format(Prd.get_period_day_number()))
         print('Available categories: {}'.format([*ctg.get_categories_names()]))
         print(stat.get_total_info())
         print(stat.get_total_savings())
