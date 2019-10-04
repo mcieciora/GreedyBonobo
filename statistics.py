@@ -9,7 +9,7 @@ def show_history():
         print('Transactions history:')
         for transaction in Trc.get_transaction_history():
             print('&{} {}PLN for {} - {}'.format(transaction.transaction_id, transaction.expense, transaction.category,
-                                             transaction.description))
+                                                 transaction.description))
     else:
         print('There are no transactions to show!')
     if len(Pmt.get_payment_history()) > 0:
@@ -28,11 +28,47 @@ def get_total_info():
 def get_total_savings():
     savings = round(Pmt.get_total() - Trc.get_total(), 2)
     return 'Savings: {} out of {} total income ({}%)'.format(savings, Pmt.get_total(), get_percentage(savings,
-                                                                                              Pmt.get_total()))
+                                                                                                      Pmt.get_total()))
+
+
+def show_history_sorted_descending():
+    if len(Trc.get_transaction_history()) > 0:
+        print('Transactions history [cost descending]:')
+        sorted_list = sorted(Trc.get_transaction_history(), key=lambda x: float(x.expense), reverse=True)
+        for transaction in sorted_list:
+            print('&{} {}PLN for {} - {}'.format(transaction.transaction_id, transaction.expense, transaction.category,
+                                                 transaction.description))
+    else:
+        print('There are no transactions to show!')
+    if len(Pmt.get_payment_history()) > 0:
+        print('Income history [cost descending]:')
+        sorted_list = sorted(Pmt.get_payment_history(), key=lambda x: x.payment, reverse=True)
+        for payment in sorted_list:
+            print('&{} {} - {}'.format(payment.payment_id, payment.payment, payment.description))
+    else:
+        print('There are no incomes to show!')
+
+
+def show_history_group_by_categories():
+    if len(Trc.get_transaction_history()) > 0:
+        print('Transactions history [group by categories]:')
+        sorted_list = sorted(Trc.get_transaction_history(), key=lambda x: x.category, reverse=False)
+        for transaction in sorted_list:
+            print('&{} {}PLN for {} - {}'.format(transaction.transaction_id, transaction.expense, transaction.category,
+                                                 transaction.description))
+    else:
+        print('There are no transactions to show!')
+    if len(Pmt.get_payment_history()) > 0:
+        print('Income history:')
+        for payment in Pmt.get_payment_history():
+            print('&{} {} - {}'.format(payment.payment_id, payment.payment, payment.description))
+    else:
+        print('There are no incomes to show!')
 
 
 def get_basic_info():
     print('\nActual period: {}'.format(Prd.get_actual_period_name()))
+    print('Actual period day: '.format(Prd.get_period_day_number()))
     print('Total expenses: {}/{} ({}%)'.format(Trc.get_total(), ctg.get_total_of_limits(), get_percentage(
         Trc.get_total(), ctg.get_total_of_limits())))
     print('Incomes: {}\n'.format(Pmt.get_total()))
@@ -41,13 +77,13 @@ def get_basic_info():
 def get_total_by_category(category):
     print('    {} of {} limit ({}%) which is {}% of total expenses'.format(Trc.get_total_by_category(
         category), ctg.get_category_limit(category), get_percentage(Trc.get_total_by_category(category),
-            ctg.get_category_limit(category)), get_percentage(Trc.get_total_by_category(category),
-                                                                       Trc.get_total())))
+                                                                    ctg.get_category_limit(category)),
+        get_percentage(Trc.get_total_by_category(category), Trc.get_total())))
 
 
 def get_average_by_category(category):
     if len(Trc.get_transactions_by_category(category)) > 0:
-        print('    Average expense per transaction is {}'.format(Trc.get_total_by_category(category)/len(
+        print('    Average expanse per transaction is {}'.format(Trc.get_total_by_category(category)/len(
             Trc.get_transactions_by_category(category))))
 
 

@@ -70,7 +70,18 @@ def add_income():
 
 def history():
     if Prd.is_period_active():
-        stat.show_history()
+        answer = input('Would you like to show [f]full history, [s]sort descending or [g]group by categories? ')
+        if answer.lower() == 'f':
+            stat.show_history()
+        elif answer.lower() == 's':
+            stat.show_history_sorted_descending()
+        elif answer.lower() == 'g':
+            stat.show_history_group_by_categories()
+        elif answer.lower() == 'q':
+            main_menu()
+        else:
+            print('There is no such option. Please choose proper one!')
+            return history()
     else:
         print('There is no active period!')
     back_to_main_menu()
@@ -149,6 +160,7 @@ def manage_periods():
 def statistics():
     if Prd.is_period_active():
         print('Actual period: {}'.format(Prd.get_actual_period_name()))
+        print('Actual period day: '.format(Prd.get_period_day_number()))
         print('Available categories: {}'.format([*ctg.get_categories_names()]))
         print(stat.get_total_info())
         print(stat.get_total_savings())
@@ -157,6 +169,7 @@ def statistics():
             print('-{}:'.format(category))
             stat.get_total_by_category(category)
             stat.print_biggest_expanse_by_category(category)
+            stat.get_average_by_category(category)
     else:
         print('There is no active period!')
     back_to_main_menu()
