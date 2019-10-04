@@ -68,7 +68,6 @@ def show_history_group_by_categories():
 
 def get_basic_info():
     print('\nActual period: {}'.format(Prd.get_actual_period_name()))
-    print('Actual period day: '.format(Prd.get_period_day_number()))
     print('Total expenses: {}/{} ({}%)'.format(Trc.get_total(), ctg.get_total_of_limits(), get_percentage(
         Trc.get_total(), ctg.get_total_of_limits())))
     print('Incomes: {}\n'.format(Pmt.get_total()))
