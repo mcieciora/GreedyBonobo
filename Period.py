@@ -1,21 +1,26 @@
+from datetime import datetime
+from datetime import date
 import csv
 import Payment as Ptm
 import Transaction as Trc
+import categories as ctg
 
 
 class Period:
-    def __init__(self, name, incomes, spendings, savings, active):
+    def __init__(self, name, incomes, spendings, savings, categories, date, active):
         self.name = name
         self.incomes = incomes
         self.spendings = spendings
         self.savings = savings
+        self.categories = categories
+        self.date = date
         self.active = active
 
 
 def start_period():
     period_name = input('Insert period name: ')
     if period_name not in get_periods_names():
-        add_period(Period(period_name, 0, 0, 0, True))
+        add_period(Period(period_name, 0, 0, 0, [], datetime.today().strftime('%d-%m-%Y'), True))
         print('Period started successfully!')
     else:
         print('There is already period with that name!')
@@ -42,7 +47,12 @@ def update_history(period_name):
     spendings = Trc.get_total()
     savings = incomes - spendings
     remove_period(period_name)
-    add_period(Period(period_name, incomes, spendings, savings, False))
+    categories = []
+    for category in ctg.get_categories_names():
+        categories.append('{}={}/{}'.format(category, Trc.get_total_by_category(category),
+                                            ctg.get_category_limit(category)))
+    add_period(Period(period_name, incomes, spendings, savings, categories, datetime.today().strftime('%d-%m-%Y'),
+                      False))
 
 
 def add_period(period):
@@ -76,8 +86,8 @@ def save_period_info(period_list):
     with open('history.csv', mode='a') as periods_info_file:
         for period in period_list:
             csv_writer = csv.writer(periods_info_file, delimiter='|')
-            csv_writer.writerow([period.name, period.incomes, period.spendings, period.savings, period.active,
-                                 period.date])
+            csv_writer.writerow([period.name, period.incomes, period.spendings, period.savings, period.categories,
+                                 period.date, period.active])
 
 
 def get_periods_list():
@@ -86,7 +96,8 @@ def get_periods_list():
         for row in period_info_file.readlines():
             if row != '\n':
                 split_row = row.replace('\n', '').split('|')
-                period_list.append(Period(split_row[0], split_row[1], split_row[2], split_row[3], split_row[4]))
+                period_list.append(Period(split_row[0], split_row[1], split_row[2], split_row[3], split_row[4],
+                                          split_row[5], split_row[6]))
     return period_list
 
 
@@ -110,3 +121,13 @@ def is_period_active():
         return True
     else:
         return False
+
+
+def get_period_day_number():
+    if is_period_active():
+        current_date = datetime.today().date()
+        date_object = datetime.strptime(get_periods_list()[-1].date, '%d-%m-%Y').date()
+        delta = current_date - date_object
+        return delta.days
+    else:
+        return 'None'

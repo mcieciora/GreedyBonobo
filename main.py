@@ -11,8 +11,7 @@ import statistics as stat
 def main_menu():
     stat.get_basic_info()
     print('[1] Add/Remove transaction\n[2] Add/Remove income\n[3] Show history\n[4] Show statistics\n[5] '
-          'Add/Remove '
-          'category\n[6] Update limits\n[7] Manage periods\n')
+          'Add/Remove category\n[6] Update limits\n[7] Manage periods\n[WIP] Analyze\n[q] Exit/Back\n')
     menu_change(input('>>>'))
 
 
@@ -159,7 +158,7 @@ def manage_periods():
 
 def statistics():
     if Prd.is_period_active():
-        print('Actual period: {}'.format(Prd.get_actual_period_name()))
+        print('Actual period: {}, day: {}'.format(Prd.get_actual_period_name(), Prd.get_period_day_number()))
         print('Available categories: {}'.format([*ctg.get_categories_names()]))
         print(stat.get_total_info())
         print(stat.get_total_savings())
