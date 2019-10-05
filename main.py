@@ -162,6 +162,7 @@ def statistics():
         print('Available categories: {}'.format([*ctg.get_categories_names()]))
         print(stat.get_total_info())
         print(stat.get_total_savings())
+        stat.get_average_expanses_by_day()
         stat.print_biggest_expanse()
         for category in ctg.get_categories_names():
             print('-{}:'.format(category))

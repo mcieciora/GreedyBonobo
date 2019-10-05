@@ -127,6 +127,11 @@ def get_biggest_expanse_by_category(category):
         return biggest
 
 
+def get_average_expanses_by_day():
+    if Prd.get_period_day_number() > 0:
+        print('Average expanses per day is {}'.format(round(Trc.get_total()/Prd.get_period_day_number(), 2)))
+
+
 def get_percentage(a, b):
     if b > 0:
         return round(a/b*100, 2)
