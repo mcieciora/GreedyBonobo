@@ -132,6 +132,12 @@ def get_average_expanses_by_day():
         print('Average expanses per day is {}'.format(round(Trc.get_total()/Prd.get_period_day_number(), 2)))
 
 
+def get_average_by_category_per_day(category):
+    if Prd.get_period_day_number() > 0:
+        print('    Average expanses in category per day is {}'.format(round(Trc.get_total_by_category(category) /
+                                                                            Prd.get_period_day_number(), 2)))
+
+
 def get_percentage(a, b):
     if b > 0:
         return round(a/b*100, 2)

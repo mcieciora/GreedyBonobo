@@ -169,6 +169,7 @@ def statistics():
             stat.get_total_by_category(category)
             stat.print_biggest_expanse_by_category(category)
             stat.get_average_by_category(category)
+            stat.get_average_by_category_per_day(category)
     else:
         print('There is no active period!')
     back_to_main_menu()
